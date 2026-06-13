@@ -5,6 +5,7 @@ import { worldCupTeams } from "./teams.js";
 import { Connection, clusterApiUrl } from "https://esm.sh/@solana/web3.js";
 import { Metaplex } from "https://esm.sh/@metaplex-foundation/js";
 import { walletAdapterIdentity } from "https://esm.sh/@metaplex-foundation/js@0.20.1";
+import { SystemProgram, PublicKey, LAMPORTS_PER_SOL, Transaction } from "https://esm.sh/@solana/web3.js";
 
 
 const connection = new Connection(clusterApiUrl("devnet"));
@@ -47,6 +48,7 @@ function nftCards(input) {
             <button onclick="mintNFT('${element.name}')">
               Mint
             </button>
+            <p>Price: ${calculatePrice(element)} SOL</p>
           </div>
         `;
     })
@@ -57,21 +59,6 @@ selectContainer.addEventListener("input", () => {
 });
 
 nftContainer.innerHTML = nftCards(selectContainer.value).join("");
-
-function buildMetadata(team) {
-  return {
-    name: `${team.name} World Cup NFT`,
-    description: "Dynamic soccer NFT",
-    image: team.flag,
-    attributes: [
-      { trait_type: "Goals", value: team.goals },
-      { trait_type: "Wins", value: team.wins },
-      { trait_type: "Losses", value: team.losses },
-      { trait_type: "Draws", value: team.draws },
-      { trait_type: "Goal Diff", value: team.goalDiff }
-    ]
-  };
-}
 
 async function uploadImage(team) {
   const blob = await fetch(team.flag).then(r => r.blob());
@@ -125,6 +112,10 @@ const metadata = {
   },
 
   attributes: [
+    {
+      trait_type: "Price",
+      value: String(calculatePrice(team))
+    },
     { trait_type: "Goals", value: String(team.goals) },
     { trait_type: "Wins", value: String(team.wins) },
     { trait_type: "Losses", value: String(team.losses) },
@@ -172,18 +163,38 @@ window.mintNFT = async (teamName) => {
       return;
     }
 
-    if (!provider.isConnected) {
-      const resp = await provider.connect();
-    }
+if (!provider.isConnected) {
+  await provider.connect();
+}
 
     metaplex.use(walletAdapterIdentity(provider));
 
+
+const price = calculatePrice(team);
+
+  const transaction = new Transaction().add(
+    SystemProgram.transfer({
+      fromPubkey: provider.publicKey,
+      toPubkey: new PublicKey("FWKBTMLFxArTnQC6vbAjkVpeQzdVN8hnBEZPN1XwohdF"),
+      lamports: Math.floor(price * LAMPORTS_PER_SOL)
+    })
+  );
+
+  transaction.feePayer = provider.publicKey;
+
+  const { blockhash } = await connection.getLatestBlockhash();
+  transaction.recentBlockhash = blockhash;
+
+  const { signature } = await provider.signAndSendTransaction(transaction);
+
+  await connection.confirmTransaction(signature, "confirmed");
+
+    // THEN mint
     const { nft } = await metaplex.nfts().create({
       uri: metadataUrl,
       name: team.name,
       sellerFeeBasisPoints: 0
     });
-
     console.log("Mint success:", nft.address.toString());
   } catch (err) {
     console.error(err);
@@ -208,20 +219,5 @@ function calculatePrice(team) {
   if (team.losses === 0) price *= 1.25;
   if (team.goalDiff > 5) price *= 1.2;
 
-  return price;
+  return price/10000;
 }
-
-/* 
-converts each team object into a new object with the same 
-properties but also includes a price property calculated by 
-the calculatePrice function, then creates a new object with 
-the team names as keys and the new objects as values
-*/
-
-const teamsWithPrice = Object.fromEntries(
-  worldCupTeams.map(team => [
-    team.name,
-    { ...team, price: calculatePrice(team) }
-  ])
-);
-// e.g. teamsWithPrice["Brazil"].price gives the price of the Brazil card 
