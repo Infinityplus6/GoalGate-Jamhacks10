@@ -7,8 +7,6 @@ const network = "devnet";
 export async function connectWallet() {
   const provider = window.solana;
 
-  console.log(provider);
-
   if (!provider || !provider.isPhantom) {
     alert("Install Phantom wallet");
     return;

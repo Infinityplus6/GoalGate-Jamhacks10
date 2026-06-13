@@ -1,43 +1,15 @@
-/* =========================================
-   GLOBAL APP
-   ========================================= */
+const API_KEY = "44217c6c89cfd28d1ce9e4b0f80fb54d";
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initializeApp
-);
-
-function initializeApp()
-{
-    initializeNavbarEffects();
-}
-
-/* =========================================
-   NAVBAR SCROLL EFFECT
-   ========================================= */
-
-function initializeNavbarEffects()
-{
-    const navbar =
-        document.querySelector(
-            ".navbar"
-        );
-
-    window.addEventListener(
-        "scroll",
-        () => {
-
-            if(window.scrollY > 50)
-            {
-                navbar.style.background =
-                    "rgba(9,13,17,.95)";
-            }
-            else
-            {
-                navbar.style.background =
-                    "rgba(9,13,17,.8)";
-            }
-
+fetch(
+    "https://v3.football.api-sports.io/leagues?search=World Cup",
+    {
+        headers: {
+            "x-apisports-key": API_KEY
         }
-    );
-}
+    }
+)
+.then(res => res.json())
+.then(data => {
+    console.log(JSON.stringify(data, null, 2));
+})
+.catch(console.error);
