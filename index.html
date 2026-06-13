@@ -161,28 +161,18 @@
         let activeChartInstance = null;
         let dynamicTeamsMap = [];
 
-        // HIGH-FIDELITY BACKUP BACKPLANE MATRIX (Triggers if API is unkeyed or rate-limited)
-        const BACKUP_FIXTURES = [
-            { fixture: { status: { short: "LIVE", elapsed: 74 } }, teams: { home: { name: "Mexico", logo: "" }, away: { name: "Brazil", logo: "" } }, goals: { home: 3, away: 2 } },
-            { fixture: { status: { short: "FT", elapsed: 90 } }, teams: { home: { name: "Argentina", logo: "" }, away: { name: "Germany", logo: "" } }, goals: { home: 2, away: 1 } },
-            { fixture: { status: { short: "FT", elapsed: 90 } }, teams: { home: { name: "France", logo: "" }, away: { name: "USA", logo: "" } }, goals: { home: 1, away: 1 } },
-            { fixture: { status: { short: "2H", elapsed: 55 } }, teams: { home: { name: "Spain", logo: "" }, away: { name: "England", logo: "" } }, goals: { home: 0, away: 2 } }
-        ];
-
         document.addEventListener("DOMContentLoaded", initializeLiveDashboard);
 
         async function initializeLiveDashboard() {
             let fixtures = null;
 
             // Only issue call if the developer dropped in a valid key container
-            if (API_KEY !== "YOUR_ACTUAL_API_KEY_HERE" && API_KEY.trim() !== "") {
+            if (API_KEY !== "44217c6c89cfd28d1ce9e4b0f80fb54d" && API_KEY.trim() !== "") {
                 fixtures = await fetchLiveTournamentFixtures();
             }
 
             if (!fixtures || fixtures.length === 0) {
-                console.warn("[GoalGate Watchdog] Real-time network context unavailable. Attaching localized high-fidelity fallback layer.");
-                fixtures = BACKUP_FIXTURES;
-            }
+                console.warn("[GoalGate Watchdog] Real-time network context unavailable. Attaching localized high-fidelity fallback layer.");            }
             
             processTokenPricesFromLiveData(fixtures);
             renderMatchCenter(fixtures);

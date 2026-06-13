@@ -9,11 +9,27 @@ const walletDisplay = document.getElementById("walletAddress");
 
 console.log("JS loaded");
 
+console.log(`window.solana.isConnected: ${window.solana.isConnected}`)
+
 
 connectBtn.addEventListener("click", async () => {
-    wallet = await connectWallet();
+  console.log("Button clicked");
 
-    walletDisplay.textContent = "Connected: " + wallet;
+  try {
+    console.log("Before connect");
+
+    const resp = await window.solana.connect({
+      onlyIfTrusted: false
+  });
+
+    console.log("After connect");
+    console.log(resp);
+
+    walletDisplay.textContent = resp.publicKey.toString();
+
+  } catch (err) {
+    console.error("Connect failed:", err);
+  }
 });
 
 console.log("Checking Phantom...");
