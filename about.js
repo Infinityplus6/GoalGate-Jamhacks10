@@ -2,7 +2,6 @@
 
 import { connectWallet } from "./solana.js";
 import { worldCupTeams } from "./teams.js";
-import { NFTStorage } from "https://cdn.jsdelivr.net/npm/nft.storage/dist/bundle.esm.min.js";
 import { Connection, clusterApiUrl } from "https://esm.sh/@solana/web3.js";
 import { Metaplex } from "https://esm.sh/@metaplex-foundation/js";
 import { walletAdapterIdentity } from "https://esm.sh/@metaplex-foundation/js@0.20.1";
@@ -10,10 +9,6 @@ import { walletAdapterIdentity } from "https://esm.sh/@metaplex-foundation/js@0.
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = Metaplex.make(connection);
-
-const client = new NFTStorage({
-  token: "3502c30d.3cba7dac.948dbf36b13647ff9c5368c53dba800b"
-});
 
 let wallet = null;
 
@@ -78,10 +73,84 @@ function buildMetadata(team) {
   };
 }
 
-async function uploadMetadata(team) {
-  return "https://arweave.net/placeholder.json";
+async function uploadImage(team) {
+  const blob = await fetch(team.flag).then(r => r.blob());
+
+  const form = new FormData();
+  form.append("file", blob, `${team.code}.png`);
+
+  const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+    method: "POST",
+    headers: {
+      pinata_api_key: "dfda45c9c765d1582026",
+      pinata_secret_api_key: "94cddce944a7ee63cfc8b04b3c376553396b650413691e9abb34495aaea18c8a"
+    },
+    body: form
+  });
+
+  const data = await res.json();
+
+  console.log("Pinata image response:", data);
+
+  if (!res.ok) {
+    console.log("Pinata error response:", data);
+    throw new Error("Pinata image upload request failed");
+  }
+
+  if (!data.IpfsHash) {
+    console.log("Invalid Pinata response:", data);
+    throw new Error("Image upload failed (no IpfsHash returned)");
+  }
+
+  return `https://gateway.pinata.cloud/ipfs/${data.IpfsHash}`;
 }
 
+async function uploadMetadata(team) {
+  const imageUrl = await uploadImage(team);
+
+const metadata = {
+  name: `${team.name} World Cup NFT`,
+  symbol: "WC2026",
+  description: "World Cup national team NFT card",
+
+  image: imageUrl,
+
+  properties: {
+    files: [
+      {
+        uri: imageUrl,
+        type: "image/png"
+      }
+    ]
+  },
+
+  attributes: [
+    { trait_type: "Goals", value: String(team.goals) },
+    { trait_type: "Wins", value: String(team.wins) },
+    { trait_type: "Losses", value: String(team.losses) },
+    { trait_type: "Draws", value: String(team.draws) },
+    { trait_type: "Goal Diff", value: String(team.goalDiff) }
+  ]
+};
+
+  const res = await fetch("https://api.pinata.cloud/pinning/pinJSONToIPFS", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      pinata_api_key: "dfda45c9c765d1582026",
+      pinata_secret_api_key: "94cddce944a7ee63cfc8b04b3c376553396b650413691e9abb34495aaea18c8a"
+    },
+    body: JSON.stringify(metadata)
+  });
+
+  const data = await res.json();
+
+  if (!data.IpfsHash) {
+    throw new Error("Metadata upload failed");
+  }
+
+  return `https://gateway.pinata.cloud/ipfs/${data.IpfsHash}`;
+}
 let minting = false;
 
 window.mintNFT = async (teamName) => {
@@ -92,6 +161,7 @@ window.mintNFT = async (teamName) => {
     console.log("Mint clicked:", teamName);
 
     const team = worldCupTeams.find(t => t.name === teamName);
+    console.log("Selected team:", team);
 
     const metadataUrl = await uploadMetadata(team);
 
@@ -103,7 +173,7 @@ window.mintNFT = async (teamName) => {
     }
 
     if (!provider.isConnected) {
-      await provider.connect();
+      const resp = await provider.connect();
     }
 
     metaplex.use(walletAdapterIdentity(provider));
