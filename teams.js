@@ -1,7 +1,7 @@
-export const worldCupTeams = [
+export let worldCupTeams = [
   // Co-hosts
-  { name: "Canada", code: "ca", flag: "https://flagcdn.com/w320/ca.png", goals: 1, wins: 0, losses: 0, draws: 1, goalDiff: 0 },
-  { name: "Mexico", code: "mx", flag: "https://flagcdn.com/w320/mx.png", goals: 3, wins: 1, losses: 0, draws: 0, goalDiff: 2 },
+  { name: "Canada", code: "ca", flag: "https://flagcdn.com/w320/ca.png", goals: 3, wins: 0, losses: 0, draws: 1, goalDiff: 0 },
+  { name: "Mexico", code: "mx", flag: "https://flagcdn.com/w320/mx.png", goals: 2, wins: 1, losses: 0, draws: 0, goalDiff: 2 },
   { name: "United States", code: "us", flag: "https://flagcdn.com/w320/us.png", goals: 4, wins: 1, losses: 0, draws: 0, goalDiff: 3 },
 
   // AFC

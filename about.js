@@ -24,23 +24,32 @@ async function updateTeamStats() {
     console.log("API response:", data);
     let standings = data.standings;
     console.log(standings);
+    let count = 0;
 
     for(let i = 0; i < 12;i++)  {
       for(let j = 0; j < 4;j++) {
         let path = standings[i].table[j];
         let index = worldCupTeams.findIndex(team => team.name === path.team.name);
+        console.log(`index: ${count++} = ${index}`);
         if(index === -1)  {
           console.log(`${i}, ${j}`);
           continue;
         }
+        console.log(worldCupTeams[index].name);
+        console.log(path.team.name);
         worldCupTeams[index].goals = path.goalsFor;
+        
+        console.log(worldCupTeams[index].goals);
         worldCupTeams[index].wins = path.won;
         worldCupTeams[index].losses = path.lost;
         worldCupTeams[index].draws = path.draw;
         worldCupTeams[index].goalDiff = path.goalDifference;
       }
     }
+  nftContainer.innerHTML = nftCards(selectContainer.value).join("");
   }
+
+updateTeamStats();
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = Metaplex.make(connection);
@@ -90,8 +99,6 @@ selectContainer.addEventListener("input", () => {
   nftContainer.innerHTML = nftCards(selectContainer.value).join("");
 });
 
-nftContainer.innerHTML = nftCards(selectContainer.value).join("");
-updateTeamStats();
 
 async function uploadImage(team) {
   const blob = await fetch(team.flag).then(r => r.blob());
