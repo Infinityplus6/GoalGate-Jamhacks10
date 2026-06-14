@@ -10,6 +10,45 @@ import { SystemProgram, PublicKey, LAMPORTS_PER_SOL, Transaction } from "https:/
 
 const nftContainer = document.getElementById("nft-container");
 
+
+// Function that calculates card price for each country, takes in object parameter
+function calculatePrice(team) {
+  const base = 50;
+
+  const goals = team.goals * 8;
+  const wins = team.wins * 15;
+  const draws = team.draws * 7;
+  const losses = team.losses * 10;
+  const gd = team.goalDiff * 5;
+
+  let price = base + goals + wins + draws + gd - losses;
+
+  // hype modifier
+  if (team.losses === 0) price *= 1.25;
+  if (team.goalDiff > 5) price *= 1.2;
+
+  return price/10000;
+}
+
+function nftCards(input) {
+
+  let nfts = worldCupTeams.filter(element => element.name.toLowerCase().includes(input.toLowerCase()));
+
+  return nfts
+    .map(element => {
+      return `
+        <div class="card">
+          <h2>${element.name}</h2>
+          <img src="${element.flag}" class="flag" />
+          <p>Goals: ${element.goals}</p>
+          <p>W-L-D:<br>${element.wins}-${element.losses}-${element.draws}</p>
+          <button class="mint-button" onclick="mintNFT('${element.name}')">Mint</button>
+          <p>Price: ${calculatePrice(element)} SOL</p>
+        </div>
+      `;
+  })
+}
+
 async function updateTeamStats() {
     const url = "https://api.football-data.org/v4/competitions/WC/standings";
 
@@ -79,24 +118,6 @@ const selectContainer = document.getElementById("search");
 
 updateTeamStats();
 
-function nftCards(input) {
-
-  let nfts = worldCupTeams.filter(element => element.name.toLowerCase().includes(input.toLowerCase()));
-
-  return nfts
-    .map(element => {
-      return `
-        <div class="card">
-          <h2>${element.name}</h2>
-          <img src="${element.flag}" class="flag" />
-          <p>Goals: ${element.goals}</p>
-          <p>W-L-D:<br>${element.wins}-${element.losses}-${element.draws}</p>
-          <button class="mint-button" onclick="mintNFT('${element.name}')">Mint</button>
-          <p>Price: ${calculatePrice(element)} SOL</p>
-        </div>
-      `;
-  })
-}
 
 selectContainer.addEventListener("input", () => {
   nftContainer.innerHTML = nftCards(selectContainer.value).join("");
@@ -252,24 +273,6 @@ window.mintNFT = async (teamName) => {
   }
 };
 
-// Function that calculates card price for each country, takes in object parameter
-function calculatePrice(team) {
-  const base = 50;
-
-  const goals = team.goals * 8;
-  const wins = team.wins * 15;
-  const draws = team.draws * 7;
-  const losses = team.losses * 10;
-  const gd = team.goalDiff * 5;
-
-  let price = base + goals + wins + draws + gd - losses;
-
-  // hype modifier
-  if (team.losses === 0) price *= 1.25;
-  if (team.goalDiff > 5) price *= 1.2;
-
-  return price/10000;
-}
 
 const teamSelect = document.getElementById("teamSelect");
 const statSelect = document.getElementById("statSelect");
