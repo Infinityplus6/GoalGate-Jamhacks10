@@ -267,3 +267,35 @@ function calculatePrice(team) {
 
   return price/10000;
 }
+
+const teamSelect = document.getElementById("teamSelect");
+const statSelect = document.getElementById("statSelect");
+const valueInput = document.getElementById("valueInput");
+const applyBtn = document.getElementById("applyBtn");
+
+worldCupTeams.forEach(team => {
+  const opt = document.createElement("option");
+  opt.value = team.name;
+  opt.textContent = team.name;
+  teamSelect.appendChild(opt);
+});
+
+function updateTeamStat(teamName, stat, value) {
+  const team = worldCupTeams.find(t => t.name === teamName);
+  if (!team) return;
+
+  const num = Number(value);
+  if (Number.isNaN(num)) return;
+
+  team[stat] = num;
+}
+
+applyBtn.addEventListener("click", () => {
+  updateTeamStat(
+    teamSelect.value,
+    statSelect.value,
+    valueInput.value
+  );
+
+  nftContainer.innerHTML = nftCards(selectContainer.value).join("");
+});

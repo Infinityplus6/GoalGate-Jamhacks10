@@ -164,3 +164,64 @@ body > div:first-of-type {
 .mint-button:active {
   transform: scale(0.98);
 }
+
+#simulate {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  color:white;
+
+  padding: 1rem;
+  margin-top: 2rem;
+
+  background-color: rgba(98, 55, 160, 0.15);
+  border: 2px solid rgba(151, 69, 203, 0.2);
+  border-radius: 8px;
+
+  backdrop-filter: blur(8px);
+}
+
+/* Inputs + Selects */
+#simulate select,
+#simulate input {
+  background-color: var(--light-purple);
+  border: 1px solid var(--primary);
+  color: black;
+
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+
+  font-size: 0.9rem;
+  outline: none;
+}
+
+
+#simulate select:focus,
+#simulate input:focus {
+  border-color: var(--light-purple);
+}
+
+/* Apply button */
+#applyBtn {
+  background-color: var(--accent);
+  color: var(--text-light);
+
+  border: none;
+  padding: 0.6rem 1rem;
+
+  font-weight: 600;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+#applyBtn:hover {
+  opacity: 0.9;
+}
+
+#applyBtn:active {
+  transform: scale(0.97);
+}
