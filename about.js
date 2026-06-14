@@ -7,6 +7,38 @@ import { Metaplex } from "https://esm.sh/@metaplex-foundation/js";
 import { walletAdapterIdentity } from "https://esm.sh/@metaplex-foundation/js@0.20.1";
 import { SystemProgram, PublicKey, LAMPORTS_PER_SOL, Transaction } from "https://esm.sh/@solana/web3.js";
 
+async function updateTeamStats() {
+  const response = await fetch(
+    "https://v3.football.api-sports.io/standings?league=1&season=2026",
+    {
+      headers: {
+        "x-apisports-key": "YOUR_API_KEY"
+      }
+    }
+  );
+
+  const data = await response.json();
+
+  const standings =
+    data.response[0].league.standings.flat();
+
+  standings.forEach(apiTeam => {
+
+    const team = worldCupTeams.find(
+      t => t.name === apiTeam.team.name
+    );
+
+    if (!team) return;
+
+    team.goals = apiTeam.all.goals.for;
+    team.wins = apiTeam.all.won;
+    team.losses = apiTeam.all.lose;
+    team.draws = apiTeam.all.draw;
+    team.goalDiff = apiTeam.goalsDiff;
+  });
+
+  nftContainer.innerHTML = nftCards("").join("");
+}
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = Metaplex.make(connection);
@@ -57,6 +89,7 @@ selectContainer.addEventListener("input", () => {
 });
 
 nftContainer.innerHTML = nftCards(selectContainer.value).join("");
+updateTeamStats();
 
 async function uploadImage(team) {
   const blob = await fetch(team.flag).then(r => r.blob());
