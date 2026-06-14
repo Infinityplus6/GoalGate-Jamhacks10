@@ -8,37 +8,39 @@ import { walletAdapterIdentity } from "https://esm.sh/@metaplex-foundation/js@0.
 import { SystemProgram, PublicKey, LAMPORTS_PER_SOL, Transaction } from "https://esm.sh/@solana/web3.js";
 
 async function updateTeamStats() {
-  const response = await fetch(
-    "https://v3.football.api-sports.io/standings?league=1&season=2026",
-    {
-      headers: {
-        "x-apisports-key": "YOUR_API_KEY"
+    const url = "https://api.football-data.org/v4/competitions/WC/standings";
+
+    const response = await fetch(
+      "https://corsproxy.io/?" + encodeURIComponent(url),
+      {
+        headers: {
+          "X-Auth-Token": "af7fb6aa2e6a41af9d9ce6da39b6373d"
+        }
       }
-    }
-  );
-
-  const data = await response.json();
-
-  const standings =
-    data.response[0].league.standings.flat();
-
-  standings.forEach(apiTeam => {
-
-    const team = worldCupTeams.find(
-      t => t.name === apiTeam.team.name
     );
 
-    if (!team) return;
+    const data = await response.json();
 
-    team.goals = apiTeam.all.goals.for;
-    team.wins = apiTeam.all.won;
-    team.losses = apiTeam.all.lose;
-    team.draws = apiTeam.all.draw;
-    team.goalDiff = apiTeam.goalsDiff;
-  });
+    console.log("API response:", data);
+    let standings = data.standings;
+    console.log(standings);
 
-  nftContainer.innerHTML = nftCards("").join("");
-}
+    for(let i = 0; i < 12;i++)  {
+      for(let j = 0; j < 4;j++) {
+        let path = standings[i].table[j];
+        let index = worldCupTeams.findIndex(team => team.name === path.team.name);
+        if(index === -1)  {
+          console.log(`${i}, ${j}`);
+          continue;
+        }
+        worldCupTeams[index].goals = path.goalsFor;
+        worldCupTeams[index].wins = path.won;
+        worldCupTeams[index].losses = path.lost;
+        worldCupTeams[index].draws = path.draw;
+        worldCupTeams[index].goalDiff = path.goalDifference;
+      }
+    }
+  }
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = Metaplex.make(connection);

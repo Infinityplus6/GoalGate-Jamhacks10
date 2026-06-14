@@ -1,8 +1,8 @@
 export const worldCupTeams = [
   // Co-hosts
   { name: "Canada", code: "ca", flag: "https://flagcdn.com/w320/ca.png", goals: 1, wins: 0, losses: 0, draws: 1, goalDiff: 0 },
-  { name: "Mexico", code: "mx", flag: "https://flagcdn.com/w320/mx.png", goals: 2, wins: 1, losses: 0, draws: 0, goalDiff: 2 },
-  { name: "USA", code: "us", flag: "https://flagcdn.com/w320/us.png", goals: 4, wins: 1, losses: 0, draws: 0, goalDiff: 3 },
+  { name: "Mexico", code: "mx", flag: "https://flagcdn.com/w320/mx.png", goals: 3, wins: 1, losses: 0, draws: 0, goalDiff: 2 },
+  { name: "United States", code: "us", flag: "https://flagcdn.com/w320/us.png", goals: 4, wins: 1, losses: 0, draws: 0, goalDiff: 3 },
 
   // AFC
   { name: "Australia", code: "au", flag: "https://flagcdn.com/w320/au.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
@@ -17,7 +17,7 @@ export const worldCupTeams = [
 
   // CAF
   { name: "Algeria", code: "dz", flag: "https://flagcdn.com/w320/dz.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
-  { name: "Cabo Verde", code: "cv", flag: "https://flagcdn.com/w320/cv.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
+  { name: "Cape Verde Islands", code: "cv", flag: "https://flagcdn.com/w320/cv.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
   { name: "Congo DR", code: "cd", flag: "https://flagcdn.com/w320/cd.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
   { name: "Ivory Coast", code: "ci", flag: "https://flagcdn.com/w320/ci.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
   { name: "Egypt", code: "eg", flag: "https://flagcdn.com/w320/eg.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
@@ -46,7 +46,7 @@ export const worldCupTeams = [
   // UEFA
   { name: "Austria", code: "at", flag: "https://flagcdn.com/w320/at.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
   { name: "Belgium", code: "be", flag: "https://flagcdn.com/w320/be.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
-  { name: "Bosnia and Herzegovina", code: "ba", flag: "https://flagcdn.com/w320/ba.png", goals: 1, wins: 0, losses: 0, draws: 1, goalDiff: 0 },
+  { name: "Bosnia-Herzegovina", code: "ba", flag: "https://flagcdn.com/w320/ba.png", goals: 1, wins: 0, losses: 0, draws: 1, goalDiff: 0 },
   { name: "Croatia", code: "hr", flag: "https://flagcdn.com/w320/hr.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
   { name: "Czechia", code: "cz", flag: "https://flagcdn.com/w320/cz.png", goals: 1, wins: 0, losses: 1, draws: 0, goalDiff: -1 },
   { name: "England", code: "gb-eng", flag: "https://flagcdn.com/w320/gb-eng.png", goals: 0, wins: 0, losses: 0, draws: 0, goalDiff: 0 },
