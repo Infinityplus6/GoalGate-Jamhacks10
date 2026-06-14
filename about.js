@@ -49,7 +49,6 @@ async function updateTeamStats() {
   nftContainer.innerHTML = nftCards(selectContainer.value).join("");
   }
 
-updateTeamStats();
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = Metaplex.make(connection);
@@ -75,6 +74,8 @@ console.log(typeof worldCupTeams[0]);
 
 const selectContainer = document.getElementById("search");
 const nftContainer = document.getElementById("nft-container");
+
+updateTeamStats();
 
 function nftCards(input) {
 
