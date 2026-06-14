@@ -1,5 +1,5 @@
 // about.js
-
+// imports
 import { connectWallet } from "./solana.js";
 import { worldCupTeams } from "./teams.js";
 import { Connection, clusterApiUrl } from "https://esm.sh/@solana/web3.js";
