@@ -1,20 +1,166 @@
-.card   {
-    padding: 10px;
-    border: 5px solid purple;
-    width: 150px;
-    text-align: center;
-    border-radius: 15px;
-}
-.card:hover{
-    scale:1.1;
+/* about.css */
+
+/* --- Design Tokens / Color Palette --- */
+:root {
+  --bg-dark: #28104E;       /* Deep plum/purple */
+  --primary: #6237A0;       /* Royal purple */
+  --accent: #9745CB;        /* Bright purple */
+  --light-purple: #DEACF5;  /* Soft lavender */
+  --text-light: #FFFFFF;
+  --text-muted: #E2D9F3;
 }
 
-#nft-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 13px;
+/* --- Base & Reset Elements --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  line-height: 1.5;
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* --- Top Header / Wallet Section --- */
+header, 
+body > div:first-of-type {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--primary);
+}
+
+#connect {
+  background-color: var(--primary);
+  color: var(--text-light);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#connect:hover {
+  background-color: var(--accent);
+}
+
+#walletAddress {
+  font-size: 0.85rem;
+  color: var(--light-purple);
+  font-family: monospace;
+}
+
+/* --- Search & Secondary Header --- */
+#display-teams h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
 }
 
 #search {
-    margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--primary);
+  color: var(--text-light);
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  margin-bottom: 2.5rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#search:focus {
+  border-color: var(--light-purple);
+}
+
+#search::placeholder {
+  color: rgba(222, 172, 245, 0.4);
+}
+
+/* --- NFT Cards Layout Grid --- */
+#nft-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Individual NFT Cards --- */
+.card {
+  background-color: rgba(98, 55, 160, 0.15); /* Tinted transparent block */
+  border: 2px solid rgba(151, 69, 203, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* Target the transform property instead of using a standalone scale() value */
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  /* Actually apply the scale transformation on hover */
+  transform: scale(1.05);
+  border-color: var(--accent);
+}
+
+.card h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.flag   {
+    width: 80px;
+}
+
+.card p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* Specific pricing line highlight */
+.card p:last-of-type {
+  font-weight: 600;
+  color: var(--light-purple);
+  margin-top: auto; /* Pushes price and CTA to the bottom uniformly */
+  margin-bottom: 1rem;
+}
+
+/* --- Mint Action Button --- */
+.mint-button {
+  width: 100%;
+  background-color: var(--light-purple);
+  color: var(--bg-dark);
+  border: none;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.mint-button:hover {
+  opacity: 0.9;
+}
+
+.mint-button:active {
+  transform: scale(0.98);
 }

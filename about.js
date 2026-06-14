@@ -1,4 +1,4 @@
-//about.js
+// about.js
 
 import { connectWallet } from "./solana.js";
 import { worldCupTeams } from "./teams.js";
@@ -32,26 +32,24 @@ console.log(typeof worldCupTeams[0]);
 
 const selectContainer = document.getElementById("search");
 const nftContainer = document.getElementById("nft-container");
+
 function nftCards(input) {
 
   let nfts = worldCupTeams.filter(element => element.name.toLowerCase().includes(input.toLowerCase()));
 
-
   return nfts
     .map(element => {
       return `
-          <div class="card">
-            <h2>${element.name}</h2>
-            <img src="${element.flag}" width="60px" height="auto" border="2px solid black" />
-            <p>Goals: ${element.goals}</p>
-            <p>W/L/T:<br>${element.wins} / ${element.losses} / ${element.draws}</p>
-            <button onclick="mintNFT('${element.name}')">
-              Mint
-            </button>
-            <p>Price: ${calculatePrice(element)} SOL</p>
-          </div>
-        `;
-    })
+        <div class="card">
+          <h2>${element.name}</h2>
+          <img src="${element.flag}" class="flag" />
+          <p>Goals: ${element.goals}</p>
+          <p>W-L-D:<br>${element.wins}-${element.losses}-${element.draws}</p>
+          <button class="mint-button" onclick="mintNFT('${element.name}')">Mint</button>
+          <p>Price: ${calculatePrice(element)} SOL</p>
+        </div>
+      `;
+  })
 }
 
 selectContainer.addEventListener("input", () => {
@@ -145,11 +143,14 @@ const metadata = {
 let minting = false;
 
 window.mintNFT = async (teamName) => {
+  document.body.style.cursor = "wait";
   if (minting) return;
   minting = true;
 
   try {
+    document.body.style.cursor = "waiting";
     console.log("Mint clicked:", teamName);
+
 
     const team = worldCupTeams.find(t => t.name === teamName);
     console.log("Selected team:", team);
@@ -163,33 +164,36 @@ window.mintNFT = async (teamName) => {
       return;
     }
 
-if (!provider.isConnected) {
-  await provider.connect();
-}
+    if (!provider.isConnected) {
+      await provider.connect();
+    }
 
     metaplex.use(walletAdapterIdentity(provider));
 
 
-const price = calculatePrice(team);
+    const price = calculatePrice(team);
 
-  const transaction = new Transaction().add(
-    SystemProgram.transfer({
-      fromPubkey: provider.publicKey,
-      toPubkey: new PublicKey("FWKBTMLFxArTnQC6vbAjkVpeQzdVN8hnBEZPN1XwohdF"),
-      lamports: Math.floor(price * LAMPORTS_PER_SOL)
-    })
-  );
+    document.body.style.cursor = "default";
 
-  transaction.feePayer = provider.publicKey;
+    const transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: provider.publicKey,
+        toPubkey: new PublicKey("FWKBTMLFxArTnQC6vbAjkVpeQzdVN8hnBEZPN1XwohdF"),
+        lamports: Math.floor(price * LAMPORTS_PER_SOL)
+      })
+    );
 
-  const { blockhash } = await connection.getLatestBlockhash();
-  transaction.recentBlockhash = blockhash;
+    transaction.feePayer = provider.publicKey;
 
-  const { signature } = await provider.signAndSendTransaction(transaction);
+    const { blockhash } = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = blockhash;
 
-  await connection.confirmTransaction(signature, "confirmed");
+    const { signature } = await provider.signAndSendTransaction(transaction);
 
-    // THEN mint
+    await connection.confirmTransaction(signature, "confirmed");
+
+
+    //mint
     const { nft } = await metaplex.nfts().create({
       uri: metadataUrl,
       name: team.name,
