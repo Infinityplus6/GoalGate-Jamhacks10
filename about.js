@@ -7,6 +7,9 @@ import { Metaplex } from "https://esm.sh/@metaplex-foundation/js";
 import { walletAdapterIdentity } from "https://esm.sh/@metaplex-foundation/js@0.20.1";
 import { SystemProgram, PublicKey, LAMPORTS_PER_SOL, Transaction } from "https://esm.sh/@solana/web3.js";
 
+
+const nftContainer = document.getElementById("nft-container");
+
 async function updateTeamStats() {
     const url = "https://api.football-data.org/v4/competitions/WC/standings";
 
@@ -73,7 +76,6 @@ console.log(typeof worldCupTeams[0]);
 
 
 const selectContainer = document.getElementById("search");
-const nftContainer = document.getElementById("nft-container");
 
 updateTeamStats();
 
