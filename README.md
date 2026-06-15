@@ -1,24 +1,163 @@
-# GoalGate-Jamhacks10
+# GoalGate - Jamhacks 10
 
-# Inspiration:
-We wanted to take advantage of some current events, and so we decided to mke your project somehow relate to the world cup. We also wanted to incorporate Solana into our project since it is a new tool we wanted to try out.
+A dynamic NFT marketplace where World Cup team NFTs change value based on real-world performance.
 
-# What it does:
-This is a dynamic NFT collectible marketplace, where users can purchase country NFTs for varying amounts of Solana, the amount one has to pay for a specific country depends on the teams performance.
+## Team
+- Maaz Siddiqui (https://github.com/Infinityplus6)
+- Ethan Wang (https://github.com/WangEthan301)
 
-# How we built it:
-We used an API link to receive live-time updates about the 2026 World Cup, which allows for dynamic pricing for our NFTs. The user saves their purchasing data by linking their Phantom Wallet. When users click "mint" on a NFT, they get an authorization pop-up all done by Solana Then users can view their purchases by going to link and pasting their phantom wallet address. The NFTs are stored using Pinata Storage.
+## Demo
+https://goal-gate-jamhacks10.vercel.app/
 
-# Challenges we ran into:
-Finding a correct API, we went through a few iterations of dynamic updating, from initially a buggy API, to hard-coding a JSON, to finally arriving at an API thta provides reliable real-time updates.
+## Devpost
+https://devpost.com/software/goal-gate?
 
-Another issue was finding a way to store our NFTs. Initially we tried storing it using NFTStorage, however we found out that its features were locked behind a paywall, so we switched to Pinata Storage.
+## Inspiration
+The 2026 FIFA World Cup is one of the largest sporting events in the world, bringing together fans from every country. We wanted to build something that captured the excitement and unpredictability of the tournament while also exploring blockchain technology.
 
-# Accomplishments that we're proud of:
-We are proud of our ability to make a project using a new code architecture we learned for the first time during this hackathon, we are super proud of the functionality of our project, and how it was able to connect to a real-time event (World Cup).
+At the same time, we were interested in learning and experimenting with the Solana ecosystem. Instead of creating a traditional NFT collection, we wanted to build NFTs whose value is tied to real-world events. This led us to the idea of GoalGate: a dynamic NFT marketplace where a country's NFT changes in value based on its World Cup performance.
 
-# What we learned:
-Throughout this project we learned a variety of hard and soft skills. On the technical side we learned how to use Solana and Phantom in our JS code, and how to manage payments and authorize accounts. We also learned how to work with Pinata Storage and incorporating our project with APIs. In terms of soft skills we learned how to work during a hackathon for the first time, and had to do a lot of time-management and optimizations/iterations to ensure we could ship our project.
+---
 
-# What's next for Goal Gate
-Future plans will mostly revolve around making the NFTs themselves dynamic in nature, so the teams performance will also be reflected in the NFT itself rather than just in the price. We also hope to add a selling feature as then we can incorporate an Oracle feed system, and make it a fully operational marketplace.
+## What it does
+GoalGate is a dynamic NFT collectible marketplace powered by Solana.
+
+Users can:
+- Browse NFTs representing World Cup nations.
+- Purchase and mint NFTs using their Phantom Wallet.
+- View dynamically changing NFT prices based on live World Cup performance.
+- Store ownership information directly through their connected wallet.
+- View their purchased NFTs through their wallet address (explorer.solana.com).
+- Make sure to have the Phantom Wallet extension for connection
+
+Unlike traditional NFT collections with fixed pricing, GoalGate uses real-time World Cup statistics to determine each country's NFT value. Strong performances increase an NFT's market value, while weaker performances result in lower prices.
+
+This creates a collectible experience that evolves alongside the tournament itself.
+
+---
+
+## How we built it
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### Blockchain & Wallet Integration
+- Solana
+- Phantom Wallet
+- Solana Web3.js
+
+### Data & Storage
+- API-Football
+- Pinata IPFS Storage
+
+### Architecture
+1. GoalGate retrieves live World Cup data through API-Football.
+2. Team statistics such as wins, losses, points, and goal differential are processed.
+3. A custom pricing algorithm calculates the NFT value for each country.
+4. Users connect their Phantom Wallet.
+5. When a user selects an NFT and clicks **Mint**, a Solana transaction is generated and approved through Phantom.
+6. NFT metadata and assets are stored through Pinata.
+7. Users can later view their purchases using their wallet address.
+
+---
+
+## Challenges we ran into
+
+### Finding reliable real-time data
+One of our biggest challenges was obtaining accurate and reliable World Cup data. We experimented with multiple approaches:
+
+- An initial sports API that produced inconsistent updates.
+- A temporary hardcoded JSON dataset.
+- Multiple pricing calculation models.
+
+Eventually, we found an API that provided dependable real-time tournament statistics and allowed us to build the dynamic pricing system we envisioned.
+
+### NFT Storage
+Originally, we planned to use NFT.Storage for asset hosting. However, after implementation we discovered several features we needed were behind paid plans. This forced us to quickly pivot and migrate our storage infrastructure to Pinata.
+
+### Learning Solana
+Since Solana was a new technology for our team, we spent significant time learning:
+- Wallet connections
+- Transaction signing
+- Authorization flows
+- NFT minting concepts
+- Blockchain storage best practices
+
+### Hackathon Time Constraints
+As first-time hackathon participants, balancing feature development, debugging, presentation preparation, and deployment within a limited timeframe was a major challenge.
+
+---
+
+## Accomplishments that we're proud of
+
+- Successfully integrating real-time World Cup data into NFT pricing.
+- Building a complete Solana-powered NFT purchasing experience.
+- Implementing Phantom Wallet authentication and transaction approval.
+- Learning and deploying blockchain technologies within a single hackathon.
+- Creating a project that connects real-world sporting events with digital collectibles.
+- Successfully pivoting our architecture when APIs and storage solutions didn't work as expected.
+- Delivering a fully functional prototype within the hackathon timeframe.
+
+---
+
+## What we learned
+
+### Technical Skills
+- Solana blockchain development
+- Phantom Wallet integration
+- Transaction authorization and payment processing
+- IPFS-based NFT storage
+- API integration and data processing
+- Dynamic pricing systems
+- Frontend development and user experience design
+
+### Soft Skills
+- Rapid prototyping
+- Time management
+- Team collaboration
+- Problem solving under pressure
+- Adapting to changing technical requirements
+- Presenting technical concepts clearly
+
+Most importantly, we learned how to take an idea from concept to a working product in a short amount of time.
+
+---
+
+## What's next for GoalGate?
+
+### Dynamic NFT Artwork
+Currently, team performance affects NFT pricing. In future versions, the NFT artwork itself will evolve based on tournament performance, allowing the visual appearance of the NFT to change as teams advance.
+
+### Full Marketplace Functionality
+We want to allow users to:
+- Buy NFTs
+- Sell NFTs
+- Trade NFTs with other users
+
+### Oracle Integration
+To support secure marketplace pricing, we plan to integrate decentralized oracle feeds that can reliably bring real-world sports data onto the blockchain.
+
+### Portfolio Analytics
+Users will be able to track:
+- NFT value changes
+- Team performance trends
+- Portfolio profit/loss
+- Historical price charts
+
+### Expanded Sporting Events
+Beyond the FIFA World Cup, GoalGate could support:
+- UEFA Champions League
+- FIFA Club World Cup
+- Olympic Football
+- International tournaments across multiple sports
+
+### Community Features
+Future versions could include:
+- Leaderboards
+- Collections and achievements
+- Prediction contests
+- Tournament-based rewards
+
+Our long-term vision is to create a platform where real-world sports performance directly drives the value and evolution of digital collectibles.
