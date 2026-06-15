@@ -1,4 +1,4 @@
-# GoalGate ⚽🚀
+# GoalGate
 
 **A Dynamic NFT Marketplace Powered by Real-World FIFA World Cup Performance**
 
