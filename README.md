@@ -20,9 +20,11 @@ GitHub: https://github.com/WangEthan301
 
 ---
 
-## Live Demo
+## Site
 
-https://goal-gate-jamhacks10.vercel.app/
+https://goal-gate-jamhacks10.vercel.app/ (live statistics currently unavailable on deployed site due to CORS proxy free usage being limited to localhost and development environments)
+
+To view live statistics, clone the repository and run the project locally.
 
 ---
 
